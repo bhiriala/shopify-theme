@@ -17,7 +17,9 @@
   <main role="main">
     {{ content_for_layout }}
   </main>
-  {{ 'bootstrap.min.js' | asset_url | script_tag }}
-  {{ 'application.js' | asset_url | script_tag }}
+  {% comment %} {{ 'bootstrap.min.js' | asset_url | script_tag }}
+  {{ 'application.js' | asset_url | script_tag }} {% endcomment %}
+  {% section 'footer' %}
+
 </body>
 </html>

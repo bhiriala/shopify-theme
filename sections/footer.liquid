@@ -1,0 +1,27 @@
+<script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
+<script src="{{ 'application.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Footer",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name":"navigation",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default":"Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+    ]
+}
+{% endschema %}

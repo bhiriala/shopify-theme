@@ -1,12 +1,22 @@
-<section class="inner-hero-section">
-    {% if section.settings.image != blank %}
-        <img src="{{ section.settings.image | img_url: 'master' }}" alt="Hero Background">
-    {% else %}
-        <img src="{{ 'default-image.jpg' | asset_url }}" alt="Default Image">
-    {% endif %}      
+<section class="inner-hero-section" >
+    {% assign image = section.settings.image %}
 
-    <div class="container">
-        <div class="row justify-content-center">
+    {% if image != blank %}
+    <img 
+        src="{{ image | img_url: 'master' }}" 
+        alt="Hero Background" 
+        width="{{ image.width }}" 
+        height="{{ image.height }}">
+    {% else %}
+    <img 
+        src="{{ 'default-image.jpg' | asset_url }}" 
+        alt="Default Image"
+        width="1200" height="600">
+    {% endif %}
+     
+
+    <div class="container" >
+        <div class="row justify-content-center" style="margin-right: 43rem;">
             <div class="col-lg-6 col-md-8 text-center">
                 <h1>{{ section.settings.title }}</h1>
                 {{ section.settings.description }}
@@ -25,7 +35,6 @@
 {
     "name": "Hero",
     "class": "hero-section",
-    "templates": ["index"],
     "settings": [
         {
             "type": "image_picker",
@@ -58,7 +67,6 @@
     ],
     "presets": [
         {
-            "category": "Hero",
             "name": "Simple Hero"
         }
     ]

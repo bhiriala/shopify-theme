@@ -4,39 +4,39 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 col-12">
-      <img class="img-fluid" src="{{ product_image | img_url: 'large' }}" alt="{ { product_image.alt }}" id="ProductMainImage" />
-      {% for image in product.images %}
-        <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}">
-      {% endfor %}
+      <img class="img-fluid" src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}" id="ProductMainImage" />
+
+      <div class="d-flex flex-wrap mt-3">
+        {% for image in product.images %}
+          <img class="img-thumbnail me-2" src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}">
+        {% endfor %}
+      </div>
     </div>
+
     <div class="col-md-6 col-12">
       <h1>{{ product.title }}</h1>
-      <p>{{ current_product.price | money_with_currency }}</p>
+      <p class="fs-4 fw-bold">{{ current_product.price | money_with_currency }}</p>
 
       {% form 'product', product, class: "product-form", id: "AddToCartForm" %}
         <div class="mb-3">
+          <label for="productSelect" class="form-label">Variantes</label>
           <select name="id" id="productSelect" class="form-select">
             {% for variant in product.variants %}
-              {% if variant.available %}
-                <option value="{{ variant.id }}">
-                  {{ variant.title }}
-                </option>
-              {% else %}
-                <option value="{{ variant.id }}" disabled="disabled">
-                  {{ variant.title }}
-                </option>
-              {% endif %}
+              <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                {{ variant.title }}
+              </option>
             {% endfor %}
           </select>
         </div>
+
         <div class="mb-3">
+          <label for="Quantity" class="form-label">Quantité</label>
           <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
         </div>
 
-        <button type="submit" name="add" id="AddToCard" class="btn btn-secondary btn-lg w-100 rounded-0">Add To Cart</button>
-        {{form |  payment_button}}
+        <button type="submit" name="add" id="AddToCart" class="btn btn-secondary btn-lg w-100 rounded-0">Add To Cart</button>
+        {{ form | payment_button }}
       {% endform %}
     </div>
   </div>
 </div>
-
