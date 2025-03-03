@@ -1,0 +1,50 @@
+<section class="container py-4" style="margin-left: 6rem;">
+    <h2 class="text-center my-3" style="margin-right: 12rem;">{{section.settings.title}}</h2>
+    <div class="row">
+        {%for product in collections[section.settings.featured_collection].products %}
+            {% assign image = product.featured_media.preview_image %}
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    {% if image != blank %}
+                        <img src="{{image |  image_url }}" class="card-img-top" alt="{{product.title}}">
+                        {% else %}
+                            {{'product-1'|  placeholder_svg_tag:'card-img-top'  }}
+                        
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title"></h5><a href="{{product.url}}">{{product.title}}</a></h5>
+                        <p class="card-text">{{product.price |  money_with_currency}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+{% schema  %} 
+{
+    "name":"featured Collection",
+    "class": "featured-collection-section",
+    "settings": [
+        {
+            "type": "collection",
+            "id": "featured_collection",
+            "label": "Collection"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "default": "Featured Collection",
+            "label": "Title"
+        }
+    ],
+    "presets": [
+        {
+            "category" : "Collection",
+            "name": "Featured Collection"
+        }
+    ]
+}
+
+{% endschema %}
