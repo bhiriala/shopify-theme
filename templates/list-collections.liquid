@@ -1,17 +1,39 @@
-{% for collection in collections %}
-  {% unless collection.handle == 'frontpage' %}
-    {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
-    <a href="{{ collection.url }}">More {{ collection_title }} &rsaquo;</a>
-    {% for product in collection.products limit:5 %}
-      {% assign grid_item_width = 'large--one-fifth medium--one-half' %}
-      <div>
-        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-        {{ product.price | money }}
-        {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
-        <a href="{{ product.url | within: collection }}">
-          <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-        </a>
-      </div>
+<div class="container my-5">
+  <div class="row">
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+        <div class="col-12">
+          <h2 class="text-center my-4">{{ collection.title | escape }}</h2>
+          <div class="text-center mb-4">
+            <a href="{{ collection.url }}" class="btn btn-primary">Voir plus {{ collection.title }}</a>
+          </div>
+        </div>
+        
+        <div class="row justify-content-center">
+          {% for product in collection.products limit:5 %}
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+              <div class="card h-100 shadow-sm">
+                <a href="{{ product.url | within: collection }}">
+                  <img src="{{ product.featured_image.src | img_url: 'large' }}" class="card-img-top" alt="{{ product.featured_image.alt | escape }}" width="280rem" 
+                  height="320rem">
+                </a>
+                <div class="card-body text-center">
+                  <h5 class="card-title">
+                    <a href="{{ product.url | within: collection }}" class="text-decoration-none text-dark">
+                      {{ product.title }}
+                    </a>
+                  </h5>
+                  <p class="card-text font-weight-bold">{{ product.price | money }}</p>
+                  {% unless product.available %}
+                    <p class="text-danger font-weight-bold">Rupture de stock</p>
+                  {% endunless %}
+                  <a href="{{ product.url | within: collection }}" class="btn btn-outline-primary btn-sm">Voir le produit</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endunless %}
     {% endfor %}
-  {% endunless %}
-{% endfor %}
+  </div>
+</div>

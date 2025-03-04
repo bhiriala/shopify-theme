@@ -1,27 +1,104 @@
-<script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
-<script src="{{ 'application.js' | asset_url }}" defer></script>
+<footer class="footer-section bg-light py-5 mt-5 border-top">
+  <div class="container">
+    <div class="row row-cols-{{ section.settings.col_num }} gy-4">
+      {% for block in section.blocks %}
+        {% assign item = block.settings %}
+        {% if block.type == "link_list" %}
+          <div class="col">
+            <h5 class="fw-bold text-uppercase mb-3">{{ item.title }}</h5>
+            {% assign footer_linklist = item.menu %}
+            <ul class="list-unstyled">
+              {% for link in linklists[footer_linklist].links %}
+                <li class="mb-2">
+                  <a href="{{ link.url }}" class="text-muted text-decoration-none transition">
+                    {{ link.title | escape }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% else if block.type == "text" %}
+              <div class="col">
+                <img src="{{item.logo | img_url :'master'}}" width="200rem" 
+                height="250rem">
+                <h5>{{item.title}}</h5>
+                <p>{{item.description}}</p>
+              </div>
+            
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-section a {
+    transition: color 0.3s ease-in-out;
+  }
+  .footer-section a:hover {
+    color: #007bff !important;
+    text-decoration: underline;
+  }
+</style>
 
 {% schema %}
-{
-  "name": "Footer",
-  "blocks": [
-    {
-      "type": "link_list",
-      "name":"navigation",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default":"Quick links"
-        },
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menu"
-        }
-      ]
-    }
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "range",
+        "id": "col_num",
+        "default": 3,
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "label": "Number of columns"
+      }
+    ],
+    "max_blocks": 4,
+    "blocks": [
+      {
+        "type": "link_list",
+        "name": "Navigation",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Quick links"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name":"Store details",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Store Logo"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default":"Store information"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Text"
+          }
+        ]
+      }
     ]
-}
+  }
 {% endschema %}
+
+<script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
+<script src="{{ 'application.js' | asset_url }}" defer></script>

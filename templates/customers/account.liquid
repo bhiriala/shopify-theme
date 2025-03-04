@@ -16,7 +16,6 @@
   {% paginate customer.orders by 10 %}
   {% if customer.orders.size != 0 %}
     {% for order in customer.orders %}
-      <!-- order details here -->
     {% endfor %}
   {% else %}
     <p>You haven't placed any orders yet.</p>

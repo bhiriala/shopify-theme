@@ -22,7 +22,8 @@
         <div class="col-3 g-2" >
           <div class="card" >
               {% if image != blank %}
-                  <img src="{{image |  image_url }}" class="card-img-top" alt="{{product.title}}" >
+                  <img src="{{image |  image_url }}" class="card-img-top" alt="{{product.title}}"  width="280rem" 
+                  height="320rem">
                   {% else %}
                       {{'product-1'|  placeholder_svg_tag:'card-img-top'  }}
               {% endif %}
