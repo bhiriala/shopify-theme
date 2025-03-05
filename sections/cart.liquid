@@ -1,0 +1,110 @@
+{% schema %}
+    {
+      "name": "Cart",
+      "tag": "section",
+      "settings": [],
+      "blocks": [
+        {
+          "type": "cart_total",
+          "name": "Cart Total",
+          "limit": 1
+        },
+        {
+          "type": "cart_buttons",
+          "name": "Cart Buttons",
+          "limit": 1
+        }
+      ],
+      "presets": [
+        {
+          "name": "Cart",
+          "blocks": [
+            { "type": "cart_total" },
+            { "type": "cart_buttons" }
+          ]
+        }
+      ]
+    }
+    {% endschema %}
+    
+    <section class="cart-page">
+      {% if cart.item_count > 0 %}
+        <div class="container">
+          <div class="container">
+            <div class="row">
+              <p class="h2 my-5 text-center">Shopping Cart</p>
+            </div>
+          </div>
+          <div class="my-5">
+            <form action="/cart" method="POST" class="row" novalidate>
+              <div class="col-12 col-md-8">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <table class="table table-bordered text-center">
+                      <thead class="table-light">
+                        <tr>
+                          <th colspan="2">Product</th>
+                          <th>Price</th>
+                          <th>Qty</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in cart.items %}
+                          <tr>
+                            <td>
+                              <a href="{{ item.url | within: collections.all }}">
+                                <img src="{{ item.image | img_url: 'medium' }}" alt="{{ item.title | escape }}" class="img-fluid" style="max-width: 80px;">
+                              </a>
+                            </td>
+                            <td>
+                              <a href="{{ item.url }}">{{ item.product.title }}</a><br>
+                              <small class="text-muted">{{ item.variant.title }}</small><br>
+                              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn btn-sm btn-danger">Remove</a>
+                            </td>
+                            <td>{{ item.price | money }}</td>
+                            <td>
+                              <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" class="form-control w-50 mx-auto">
+                            </td>
+                            <td>
+                              {% if item.original_line_price != item.line_price %}
+                                <del class="text-muted">{{ item.original_line_price | money }}</del><br>
+                              {% endif %}
+                              <strong>{{ item.line_price | money }}</strong><br>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="col-12 col-md-4">
+                <div class="card shadow">
+                  <div class="card-body text-center">
+                    {% for block in section.blocks %}
+                      {% case block.type %}
+                        {% when "cart_total" %}
+                          <p><strong>Subtotal:</strong> {{ cart.total_price | money }}</p>
+                        {% when "cart_buttons" %}
+                          <button type="submit" name="update" class="btn btn-outline-secondary w-100 mb-2">Update</button>
+                          <button type="submit" name="checkout" class="btn btn-success w-100">Checkout</button>
+                      {% endcase %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+    
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <div class="container text-center">
+          <h2>Cart</h2>
+          <p>Your cart is empty.</p>
+          <a href="/" class="btn btn-primary">Continue Shopping</a>
+        </div>
+      {% endif %}
+    </section>
+    
